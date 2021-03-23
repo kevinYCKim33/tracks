@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 // https://reactnativeelements.com/docs/input
 import { Text, Input, Button } from "react-native-elements"; // basically Bootstrap for RN
 import Spacer from "../components/Spacer";
 
 const SignupScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <View style={styles.container}>
       <Spacer>
         <Text h3>Sign Up for Tracker</Text>
       </Spacer>
-      <Input label="Email" />
+      <Input
+        label="Email"
+        value={email}
+        onChangeText={setEmail} // pretty smart
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
       <Spacer />
-      <Input label="Password" />
+      <Input
+        secureTextEntry // what makes it give it the dots
+        label="Password"
+        value={password}
+        onChangeText={setPassword}
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
       <Spacer>
         <Button title="Sign Up" />
       </Spacer>

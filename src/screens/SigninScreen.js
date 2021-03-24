@@ -10,7 +10,17 @@ const SigninScreen = () => {
 
   return (
     <View style={styles.container}>
-      <NavigationEvents onWillBlur={clearErrorMessage} />
+      {/* this is a bit cleaner than navigation.addListener but the same thing 
+        no need to unmount, but weird cause it doesn't really show up on the screen
+      */}
+      <NavigationEvents
+        // right as I'm about to focus in to it
+        onWillFocus={clearErrorMessage}
+        // onWillFocus // Grider says do onWillFocus instead in notes
+        // onDidFocus
+        // onWillBlur: when about to navigate away
+        // onDidBlur // a bit buggy at the time of Grider
+      />
       <AuthForm
         headerText="Sign In to Your Account"
         errorMessage={state.errorMessage}

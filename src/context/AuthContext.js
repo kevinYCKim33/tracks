@@ -9,11 +9,17 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case "add_error":
       return { ...state, errorMessage: action.payload };
-    case "signup":
+    case "signin": // both signup and signin uses this...cause reducer wise they're the same thing
       return { errorMessage: "", token: action.payload }; // 0 out error message
+    case "clear_error_message":
+      return { ...state, errorMessage: "" };
     default:
       return state;
   }
+};
+
+const clearErrorMessage = (dispatch) => () => {
+  dispatch({ type: "clear_error_message" });
 };
 
 const signup = (dispatch) => async ({ email, password }) => {
@@ -22,7 +28,7 @@ const signup = (dispatch) => async ({ email, password }) => {
     // console.log(response.data);
     await AsyncStorage.setItem("token", response.data.token); // this needs to be await??
     // where do I do a AsyncStorage.getItem??
-    dispatch({ type: "signup", payload: response.data.token });
+    dispatch({ type: "signin", payload: response.data.token });
 
     // navigate to main flow
     // had to do a lot of hoopla to be able to navigate from a non jsx component
@@ -38,12 +44,18 @@ const signup = (dispatch) => async ({ email, password }) => {
   }
 };
 
-const signin = (dispatch) => {
-  return ({ email, password }) => {
-    // Try to signin
-    // Handle success by updating state
-    // Handle failure by showing error message (somehow)
-  };
+const signin = (dispatch) => async ({ email, password }) => {
+  try {
+    const response = await trackerApi.post("/signin", { email, password });
+    await AsyncStorage.setItem("token", response.data.token);
+    dispatch({ type: "signin", payload: response.data.token });
+    navigate("TrackList");
+  } catch (err) {
+    dispatch({
+      type: "add_error",
+      payload: "Something went wrong with sign in",
+    });
+  }
 };
 
 const signout = (dispatch) => {
@@ -54,6 +66,6 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signout, signup }, // actions
+  { signin, signout, signup, clearErrorMessage }, // actions
   { token: null, errorMessage: "" } // defaultState
 );

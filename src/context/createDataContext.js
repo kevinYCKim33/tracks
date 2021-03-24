@@ -12,6 +12,8 @@ export default (reducer, actions, defaultValue) => {
     const boundActions = {};
     for (let key in actions) {
       boundActions[key] = actions[key](dispatch);
+      // basically associate an action with the useReducer dispatch
+      // when we actually trigger the function, it will use the dispatch through closure
     }
 
     return (

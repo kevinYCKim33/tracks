@@ -18,6 +18,8 @@ const authReducer = (state, action) => {
   }
 };
 
+// test
+
 const clearErrorMessage = (dispatch) => () => {
   dispatch({ type: "clear_error_message" });
 };

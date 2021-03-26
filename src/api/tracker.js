@@ -9,7 +9,7 @@ if (__DEV__) {
 }
 
 const instance = axios.create({
-  baseURL: "http://2e47f7361592.ngrok.io",
+  baseURL: "http://b792a6c2dbf1.ngrok.io",
 });
 
 instance.interceptors.request.use(

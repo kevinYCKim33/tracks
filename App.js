@@ -10,6 +10,7 @@ import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { setNavigator } from "./src/navigationRef";
+import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
 
 // Navigation map
 // https://www.udemy.com/course/the-complete-react-native-and-redux-course/learn/lecture/15708316?start=618#notes
@@ -17,7 +18,7 @@ import { setNavigator } from "./src/navigationRef";
 // switches between auth screens and non-auth screens;
 // want deliberately abrupt transition
 const switchNavigator = createSwitchNavigator({
-  // ResolveAuth: ResolveAuthScreen,
+  ResolveAuth: ResolveAuthScreen, // first thing you do when app is mounted, is check if user is logged in
   // nested navigator; lowercase for Grider convention
   loginFlow: createStackNavigator({
     Signup: SignupScreen,

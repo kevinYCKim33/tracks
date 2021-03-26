@@ -13,12 +13,25 @@ const authReducer = (state, action) => {
       return { errorMessage: "", token: action.payload }; // 0 out error message
     case "clear_error_message":
       return { ...state, errorMessage: "" };
+    case "signout":
+      return { token: null, errorMessage: "" };
     default:
       return state;
   }
 };
 
-// test
+// check to see if JWT is in async in my phone
+// this should be the first thing I try though?
+// gets fired in ResolveAuthScreen which is at the top of the navigator
+const tryLocalSignin = (dispatch) => async () => {
+  const token = await AsyncStorage.getItem("token");
+  if (token) {
+    dispatch({ type: "signin", payload: token });
+    navigate("TrackList"); // navigate is built in outside of React; so will handle navigation here
+  } else {
+    navigate("Signup");
+  }
+};
 
 const clearErrorMessage = (dispatch) => () => {
   dispatch({ type: "clear_error_message" });
@@ -60,14 +73,16 @@ const signin = (dispatch) => async ({ email, password }) => {
   }
 };
 
-const signout = (dispatch) => {
-  return () => {
-    // sign out somehow!
-  };
+// remove from AsyncStorage as well as Context
+// and navigate to sign up page then boom you're done
+const signout = (dispatch) => async () => {
+  await AsyncStorage.removeItem("token");
+  dispatch({ type: "signout" });
+  navigate("loginFlow");
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signout, signup, clearErrorMessage }, // actions
+  { signin, signout, signup, clearErrorMessage, tryLocalSignin }, // actions
   { token: null, errorMessage: "" } // defaultState
 );

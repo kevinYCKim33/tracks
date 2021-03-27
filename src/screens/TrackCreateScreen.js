@@ -1,5 +1,5 @@
 import "../_mockLocation"; // wahh you can import a whole directory?? kinda feels like importing css
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native-elements"; // bootstrap basically
 import { SafeAreaView } from "react-navigation";
@@ -9,8 +9,14 @@ import {
   Accuracy,
 } from "expo-location";
 import Map from "../components/Map";
+import { Context as LocationContext } from "../context/LocationContext";
+import { FontAwesome } from "@expo/vector-icons";
 
 const TrackCreateScreen = () => {
+  const {
+    state: { recording },
+    addLocation,
+  } = useContext(LocationContext);
   const [err, setErr] = useState(null);
 
   useEffect(() => {
@@ -35,6 +41,7 @@ const TrackCreateScreen = () => {
         },
         (location) => {
           console.log(location);
+          addLocation(location, recording);
         }
         //   callback
       );
@@ -51,6 +58,11 @@ const TrackCreateScreen = () => {
       {err ? <Text>Please enable location services</Text> : null}
     </SafeAreaView>
   );
+};
+
+TrackCreateScreen.navigationOptions = {
+  title: "Add Track",
+  tabBarIcon: <FontAwesome name="plus" size={20} />,
 };
 
 const styles = StyleSheet.create({});

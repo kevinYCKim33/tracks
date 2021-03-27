@@ -11,6 +11,7 @@ import TrackListScreen from "./src/screens/TrackListScreen";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
+import { Provider as LocationProvider } from "./src/context/LocationContext";
 
 // Navigation map
 // https://www.udemy.com/course/the-complete-react-native-and-redux-course/learn/lecture/15708316?start=618#notes
@@ -39,14 +40,16 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
-    <AuthProvider>
-      <App
-        ref={(navigator) => {
-          // make a reference to be able to navigate outside of React
-          // aka from the context reducer action
-          setNavigator(navigator);
-        }}
-      />
-    </AuthProvider>
+    <LocationProvider>
+      <AuthProvider>
+        <App
+          ref={(navigator) => {
+            // make a reference to be able to navigate outside of React
+            // aka from the context reducer action
+            setNavigator(navigator);
+          }}
+        />
+      </AuthProvider>
+    </LocationProvider>
   );
 };

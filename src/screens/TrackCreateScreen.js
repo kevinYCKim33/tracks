@@ -1,55 +1,20 @@
 import "../_mockLocation"; // wahh you can import a whole directory?? kinda feels like importing css
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native-elements"; // bootstrap basically
 import { SafeAreaView } from "react-navigation";
-import {
-  requestPermissionsAsync, // asks user if our app can locate you
-  watchPositionAsync,
-  Accuracy,
-} from "expo-location";
 import Map from "../components/Map";
 import { Context as LocationContext } from "../context/LocationContext";
 import { FontAwesome } from "@expo/vector-icons";
+import useLocation from "../hooks/useLocation";
 
 const TrackCreateScreen = () => {
   const {
     state: { recording },
     addLocation,
   } = useContext(LocationContext);
-  const [err, setErr] = useState(null);
 
-  useEffect(() => {
-    startWatching();
-  }, []);
-
-  const startWatching = async () => {
-    try {
-      // can we track you? Allow "Expo" Go to use your location?
-      // Allow Once; Allow While Using App; Don't Allow
-      // Settings => General => Reset => Reset Location & Privacy
-      const { granted } = await requestPermissionsAsync();
-      if (!granted) {
-        throw new Error("Location permission not granted");
-      }
-
-      subscriber = await watchPositionAsync(
-        {
-          accuracy: Accuracy.BestForNavigation, // how accurate do you want it to be? 5km? or m accuracy// higher accuracy, more battery power
-          timeInterval: 1000, // how often you want it to update the location
-          distanceInterval: 10, // we should get an update every 10m whichever
-        },
-        (location) => {
-          console.log(location);
-          addLocation(location, recording);
-        }
-        //   callback
-      );
-    } catch (e) {
-      // when error gets thrown on line 26 you immediately end up in the catch block with the new Error
-      setErr(e);
-    }
-  };
+  const [err] = useLocation(addLocation);
 
   return (
     <SafeAreaView forceInset={{ top: "always" }}>

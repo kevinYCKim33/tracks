@@ -10,7 +10,7 @@ const Map = () => {
   } = useContext(LocationContext);
 
   if (!currentLocation) {
-    // ActivityIndicator:
+    // ActivityIndicator: loading spinner
     return <ActivityIndicator size="large" style={{ marginTop: 200 }} />;
   }
 
@@ -28,24 +28,25 @@ Object {
   "timestamp": 10000000,
 }
   */
-
   return (
     <>
       <Text>hi</Text>
       <MapView
         style={styles.map}
+        // initialRegion magically won't update per re-render somehow...
         initialRegion={{
           ...currentLocation.coords,
           latitudeDelta: 0.01, // zoom level basically?
           longitudeDelta: 0.01, // zoom level basically?
         }}
-        // gahhhh how did I miss this??
-        region={{
-          ...currentLocation.coords,
-          latitudeDelta: 0.01, // zoom level basically?
-          longitudeDelta: 0.01, // zoom level basically?
-        }}
-      ></MapView>
+      >
+        <Circle
+          center={currentLocation.coords}
+          radius={30}
+          strokeColor="rgba(158, 158, 255, 1.0)"
+          fillColor="rgba(158, 158, 255, 0.3)" // nice opacity
+        />
+      </MapView>
     </>
   );
 };

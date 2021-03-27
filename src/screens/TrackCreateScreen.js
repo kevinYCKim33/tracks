@@ -2,19 +2,22 @@ import "../_mockLocation"; // wahh you can import a whole directory?? kinda feel
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native-elements"; // bootstrap basically
-import { SafeAreaView } from "react-navigation";
+import {
+  SafeAreaView,
+  withNavigationFocus, // HOC passes down isFocused; if looking at screen; true, if not: false;
+} from "react-navigation";
 import Map from "../components/Map";
 import { Context as LocationContext } from "../context/LocationContext";
 import { FontAwesome } from "@expo/vector-icons";
 import useLocation from "../hooks/useLocation";
 
-const TrackCreateScreen = () => {
+const TrackCreateScreen = ({ isFocused }) => {
   const {
     state: { recording },
     addLocation,
   } = useContext(LocationContext);
 
-  const [err] = useLocation(addLocation);
+  const [err] = useLocation(isFocused, addLocation);
 
   return (
     <SafeAreaView forceInset={{ top: "always" }}>
@@ -32,4 +35,4 @@ TrackCreateScreen.navigationOptions = {
 
 const styles = StyleSheet.create({});
 
-export default TrackCreateScreen;
+export default withNavigationFocus(TrackCreateScreen);

@@ -1,5 +1,5 @@
 import "../_mockLocation"; // wahh you can import a whole directory?? kinda feels like importing css
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native-elements"; // bootstrap basically
 import {
@@ -18,11 +18,17 @@ const TrackCreateScreen = ({ isFocused }) => {
     addLocation,
   } = useContext(LocationContext);
 
+  const callback = useCallback(
+    (location) => {
+      addLocation(location, recording);
+    },
+    [recording]
+  );
+
   // where does location come from??
   // 2nd argument, callback that gets fired with (location) as its argument everytime the position updates
-  const [err] = useLocation(isFocused, (location) => {
-    addLocation(location, recording);
-  });
+  // track location if you're looking directly at the screen or you're recording (then can be away from the screen)
+  const [err] = useLocation(isFocused || recording, callback);
 
   return (
     <SafeAreaView forceInset={{ top: "always" }}>

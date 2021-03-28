@@ -9,9 +9,10 @@ if (__DEV__) {
 }
 
 const instance = axios.create({
-  baseURL: "http://0019a3ed41d4.ngrok.io",
+  baseURL: "http://7a29c4b05469.ngrok.io",
 });
 
+// don't quite remember this...
 instance.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem("token");

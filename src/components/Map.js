@@ -29,25 +29,22 @@ Object {
 }
   */
   return (
-    <>
-      <Text>hi</Text>
-      <MapView
-        style={styles.map}
-        // initialRegion magically won't update per re-render somehow...
-        initialRegion={{
-          ...currentLocation.coords,
-          latitudeDelta: 0.01, // zoom level basically?
-          longitudeDelta: 0.01, // zoom level basically?
-        }}
-      >
-        <Circle
-          center={currentLocation.coords}
-          radius={30}
-          strokeColor="rgba(158, 158, 255, 1.0)"
-          fillColor="rgba(158, 158, 255, 0.3)" // nice opacity
-        />
-      </MapView>
-    </>
+    <MapView
+      style={styles.map}
+      // initialRegion magically won't update per re-render somehow...
+      initialRegion={{
+        ...currentLocation.coords,
+        latitudeDelta: 0.01, // zoom level basically?
+        longitudeDelta: 0.01, // zoom level basically?
+      }}
+    >
+      <Circle
+        center={currentLocation.coords}
+        radius={30}
+        strokeColor="rgba(158, 158, 255, 1.0)"
+        fillColor="rgba(158, 158, 255, 0.3)" // nice opacity
+      />
+    </MapView>
   );
 };
 

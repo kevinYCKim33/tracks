@@ -3,7 +3,6 @@ import createDataContext from "./createDataContext";
 const locationReducer = (state, action) => {
   switch (action.type) {
     case "add_current_location":
-      console.log("HI THERE!");
       return { ...state, currentLocation: action.payload };
     case "start_recording":
       return { ...state, recording: true };
@@ -31,9 +30,11 @@ const stopRecording = (dispatch) => () => {
 };
 const addLocation = (dispatch) => (location, recording) => {
   dispatch({ type: "add_current_location", payload: location });
-  // if (recording) { // turn off for now
-  dispatch({ type: "add_location", payload: location });
-  // }
+  // recording can't come straight from store...
+  // hmm redux has a getState but useContext doesn't?
+  if (recording) {
+    dispatch({ type: "add_location", payload: location });
+  }
 };
 const reset = (dispatch) => () => {
   dispatch({ type: "reset" });

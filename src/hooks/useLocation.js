@@ -26,6 +26,9 @@ export default (shouldTrack, callback) => {
           distanceInterval: 10,
         },
         callback // everytime the watchPositionAsync updates, the function you want to execute
+        // why isn't this callback() ?
+        // my guess is that watchPositionAsync is magical enough
+        // that it will fire callback with argument of location
       );
       setSubscriber(sub);
     } catch (e) {
@@ -33,7 +36,10 @@ export default (shouldTrack, callback) => {
     }
   };
 
+  // rerendering is not the same as mounting
+  // Grider: useEffect has some nasty bugs
   useEffect(() => {
+    console.log("useEffect fires!");
     if (shouldTrack) {
       startWatching();
     } else {

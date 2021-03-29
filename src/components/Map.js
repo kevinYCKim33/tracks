@@ -44,6 +44,8 @@ Object {
         strokeColor="rgba(158, 158, 255, 1.0)"
         fillColor="rgba(158, 158, 255, 0.3)" // nice opacity
       />
+      {/* polyline only accepts lat and lng coords */}
+      <Polyline coordinates={locations.map((loc) => loc.coords)} />
     </MapView>
   );
 };

@@ -13,6 +13,9 @@ const locationReducer = (state, action) => {
     case "change_name":
       return { ...state, name: action.payload };
     case "reset":
+      // hmm not clearing out current locations or recording???
+      // you don't want the dot to reset...that's silly
+      // recording has already stopped UI wise when Save Track is prompted
       return { ...state, name: "", locations: [] };
     default:
       return state;

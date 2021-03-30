@@ -10,12 +10,16 @@ const trackReducer = (state, action) => {
   }
 };
 
+// needs JWT token for authentication, but gets handled in axios interceptor
 const fetchTracks = (dispatch) => async () => {
   const response = await trackerApi.get("/tracks");
   dispatch({ type: "fetch_tracks", payload: response.data });
 };
+
+// needs JWT token for authentication, but gets handled in axios interceptor
 const createTrack = (dispatch) => async (name, locations) => {
   await trackerApi.post("/tracks", { name, locations });
+  // logic continues in useSaveTrack.js
 };
 
 export const { Provider, Context } = createDataContext(

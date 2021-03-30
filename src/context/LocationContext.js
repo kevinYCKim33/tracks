@@ -31,6 +31,9 @@ const startRecording = (dispatch) => () => {
 const stopRecording = (dispatch) => () => {
   dispatch({ type: "stop_recording" });
 };
+
+// the only super curious one...
+// executed in TrackCreateScreen
 const addLocation = (dispatch) => (location, recording) => {
   dispatch({ type: "add_current_location", payload: location });
   // recording can't come straight from store...

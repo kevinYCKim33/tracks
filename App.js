@@ -18,11 +18,13 @@ import { FontAwesome } from "@expo/vector-icons";
 // Navigation map
 // https://www.udemy.com/course/the-complete-react-native-and-redux-course/learn/lecture/15708316?start=618#notes
 
+// extracted out...
 const trackListFlow = createStackNavigator({
   TrackList: TrackListScreen,
   TrackDetail: TrackDetailScreen,
 });
 
+// ...mostly to put a cute icon in here
 trackListFlow.navigationOptions = {
   title: "Tracks",
   tabBarIcon: <FontAwesome name="th-list" size={20} />,
@@ -30,6 +32,12 @@ trackListFlow.navigationOptions = {
 
 // switches between auth screens and non-auth screens;
 // want deliberately abrupt transition
+
+// abruptly "Switch" between ResolveAuth, loginFlow, and mainFlow
+
+// slide in and out between Signup and Signin
+
+// bottom tab navigate between trackListFlow, TrackCreate, and Account
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen, // first thing you do when app is mounted, is check if user is logged in
   // nested navigator; lowercase for Grider convention
@@ -48,6 +56,9 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   // order doesn't really matter for these context providers
+
+  // Grider made a pretty Redux-y HOC for these Providers
+  // but big picture, any component can consume track/location/auth specific state/actions with useContext hook
   return (
     <TrackProvider>
       <LocationProvider>

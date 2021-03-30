@@ -14,6 +14,14 @@ export default (reducer, actions, defaultValue) => {
       boundActions[key] = actions[key](dispatch);
       // basically associate an action with the useReducer dispatch
       // when we actually trigger the function, it will use the dispatch through closure
+      // i.e. for AuthContext
+      // actions === {signin, signout, signup...}
+      // const signin = (dispatch) => async ({email, password}) => {
+      // do something
+      // dispatch({type: "signin", payload: response.data.token})
+      //}
+      // pre-execute dispatch that will be associated with this particular useReducer
+      // then when we actually execute signin() the dispatch will be associated with AuthContext
     }
 
     return (

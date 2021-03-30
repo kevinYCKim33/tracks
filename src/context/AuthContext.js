@@ -2,7 +2,7 @@ import createDataContext from "./createDataContext";
 import trackerApi from "../api/tracker";
 // import { AsyncStorage } from 'react-native'; // DEPRECATED!
 import AsyncStorage from "@react-native-community/async-storage"; // the updated way
-import { navigate } from "../navigationRef";
+import { navigate } from "../navigationRef"; // some janky method for being able to navigate outside of React
 
 // all reducers do...just return what the new state is
 const authReducer = (state, action) => {
@@ -22,7 +22,7 @@ const authReducer = (state, action) => {
 
 // check to see if JWT is in async in my phone
 // this should be the first thing I try though?
-// gets fired in ResolveAuthScreen which is at the top of the navigator
+// Yes, it gets called in ResolveAuthScreen which is at the top of the navigator stack
 const tryLocalSignin = (dispatch) => async () => {
   const token = await AsyncStorage.getItem("token");
   if (token) {
@@ -40,9 +40,8 @@ const clearErrorMessage = (dispatch) => () => {
 const signup = (dispatch) => async ({ email, password }) => {
   try {
     const response = await trackerApi.post("/signup", { email, password });
-    // console.log(response.data);
     await AsyncStorage.setItem("token", response.data.token); // this needs to be await??
-    // where do I do a AsyncStorage.getItem??
+    // where do I do a AsyncStorage.getItem?? A: in tryLocalSignin
     dispatch({ type: "signin", payload: response.data.token });
 
     // navigate to main flow
@@ -62,10 +61,16 @@ const signup = (dispatch) => async ({ email, password }) => {
 const signin = (dispatch) => async ({ email, password }) => {
   try {
     const response = await trackerApi.post("/signin", { email, password });
+
+    // just getting here means the signin was successful
+    // response.data.token is the JWT token
+    // just store it in localStorage
     await AsyncStorage.setItem("token", response.data.token);
+    // and also store it in the useContext store
     dispatch({ type: "signin", payload: response.data.token });
     navigate("TrackList");
   } catch (err) {
+    // if signin fails, or no internet connection, it will end up in this catch block
     dispatch({
       type: "add_error",
       payload: "Something went wrong with sign in",
@@ -78,7 +83,7 @@ const signin = (dispatch) => async ({ email, password }) => {
 const signout = (dispatch) => async () => {
   await AsyncStorage.removeItem("token");
   dispatch({ type: "signout" });
-  navigate("loginFlow");
+  navigate("loginFlow"); // which will kick me out to Signup...hmmm Signin would make more sense
 };
 
 export const { Provider, Context } = createDataContext(

@@ -35,6 +35,7 @@ const SigninScreen = () => {
   );
 };
 
+// no need for header
 SigninScreen.navigationOptions = () => {
   return {
     header: () => false,
@@ -43,9 +44,9 @@ SigninScreen.navigationOptions = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    marginBottom: 250,
+    flex: 1, // stretches out the div to fill the remaining vertical space
+    justifyContent: "center", // alignItems: center in flexDirection: column world
+    marginBottom: 250, // for better centering
   },
 });
 

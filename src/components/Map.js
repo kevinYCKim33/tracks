@@ -5,10 +5,13 @@ import MapView, { Polyline, Circle } from "react-native-maps"; // npx expo-cli i
 import { Context as LocationContext } from "../context/LocationContext";
 
 const Map = () => {
+  // Q: how does currentLocation get set?
+  // A: from addLocation(location, recording) from TrackCreateScreen
   const {
     state: { currentLocation, locations },
   } = useContext(LocationContext);
 
+  // just show a spinner if currentLocation is currently not available
   if (!currentLocation) {
     // ActivityIndicator: loading spinner
     return <ActivityIndicator size="large" style={{ marginTop: 200 }} />;

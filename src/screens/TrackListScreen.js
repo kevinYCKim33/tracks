@@ -9,6 +9,9 @@ const TrackListScreen = ({ navigation }) => {
 
   return (
     <>
+      {/* hmm basically like a componentDidMount/useEffect kind of a thing? */}
+      {/* slightly fancier than that; this will always occur on screenFocus, different from useEffect */}
+      {/* navigating away from the screen doesn't mean the component unmounted */}
       <NavigationEvents onWillFocus={fetchTracks} />
       <FlatList
         data={state}
